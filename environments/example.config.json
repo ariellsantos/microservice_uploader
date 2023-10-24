@@ -1,0 +1,12 @@
+{
+  "application":{
+    "port": 3009
+  },
+  "gcloud": {
+    "projectId": "projectName",
+    "serviceAccountPath": "path/to/keyfile.json"
+  },
+  "localStorage":{
+    "rootDir": "some-root-dir"
+  }
+}
