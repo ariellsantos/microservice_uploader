@@ -6,9 +6,13 @@ import { UploadFileError } from '../UploadFileError';
 import { LocalStorageConfigurations } from '../../../../Application/configs/configFactory';
 import { FileNotFoundError } from '../FileNotFoundError';
 import * as url from 'url';
+import Logger from '../../../domain/Logger';
 
 export class LocalStorage implements Storage {
-  constructor(private readonly localStorageConfig: LocalStorageConfigurations) {}
+  constructor(
+    private readonly localStorageConfig: LocalStorageConfigurations,
+    private readonly logger: Logger
+  ) {}
 
   async createURL(fileName: string): Promise<string> {
     if (!(await this.fileExists(fileName))) {
@@ -27,7 +31,7 @@ export class LocalStorage implements Storage {
 
       return await readFile(filePath, { flag: 'r' });
     } catch (error) {
-      if (error instanceof Error) console.log(error.message);
+      if (error instanceof Error) this.logger.error(error);
       throw new FileNotFoundError('File not found');
     }
   }
@@ -38,7 +42,7 @@ export class LocalStorage implements Storage {
       await this.ensureDirExist(filePath);
       await writeFile(filePath, fileData);
     } catch (error) {
-      if (error instanceof Error) console.log(error.message);
+      if (error instanceof Error) this.logger.error(error);
       throw new UploadFileError(`Can't upload file`);
     }
   }

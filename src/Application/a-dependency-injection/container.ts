@@ -7,6 +7,7 @@ import { LocalStorage } from '../../Uploader/infrastructure/storage/LocalDiskSto
 import { DeflateCompressor } from '../../Uploader/infrastructure/DeflateCompressor/DeflateCompressor';
 import { FileUploader } from '../../Uploader/application/Uploads/FileUploader';
 import { GenerateFileURI } from '../../Uploader/application/Uploads/GenerateFileURI';
+import { winstonLogger } from '../../Uploader/infrastructure/winstonLogger';
 
 const container = createContainer({
   injectionMode: InjectionMode.CLASSIC
@@ -27,7 +28,8 @@ container.register({
   storageService: aliasTo<GCPStorage>('gcpStorageService'),
   compressorService: aliasTo('deflateCompressorService'),
   uploaderService: asClass(FileUploader),
-  generateUriFileService: asClass(GenerateFileURI)
+  generateUriFileService: asClass(GenerateFileURI),
+  logger: asFunction(winstonLogger).singleton()
 });
 
 export { container };

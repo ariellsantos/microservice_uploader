@@ -7,3 +7,4 @@ coverage/
 /index.js
 /environments/production.json
 /environments/test.json
+logs/
