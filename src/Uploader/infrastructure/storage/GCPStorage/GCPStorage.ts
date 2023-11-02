@@ -5,9 +5,14 @@ import { UploadFileError } from '../UploadFileError';
 import { FileNotFoundError } from '../FileNotFoundError';
 import { FileExistsError } from '../FileExistsError';
 import { CantClearStorageError } from '../CantClearStorageError';
+import Logger from '../../../domain/Logger';
 
 export class GCPStorage implements Storage {
-  constructor(private readonly gcpStorageConnection: GCPStorageConnection) {}
+  constructor(
+    private readonly gcpStorageConnection: GCPStorageConnection,
+    private readonly logger: Logger
+  ) {}
+
   async uploadFileFromBuffer(fileName: string, fileData: FileData): Promise<void> {
     try {
       const bucket = await this.gcpStorageConnection.getBucket();
@@ -43,7 +48,7 @@ export class GCPStorage implements Storage {
       const [rawFile]: FileData[] = await file.download();
       return rawFile;
     } catch (error) {
-      if (error instanceof Error) console.log(error.message);
+      if (error instanceof Error) this.logger.error(error);
       throw new FileNotFoundError(`Can't find the file`);
     }
   }
@@ -57,7 +62,7 @@ export class GCPStorage implements Storage {
 
       return fileExists;
     } catch (error) {
-      if (error instanceof Error) console.log(error.message);
+      if (error instanceof Error) this.logger.error(error);
       throw new FileExistsError(`Can't ensure if file exists`);
     }
   }
@@ -68,7 +73,7 @@ export class GCPStorage implements Storage {
 
       await bucket.deleteFiles();
     } catch (error) {
-      if (error instanceof Error) console.log(error.message);
+      if (error instanceof Error) this.logger.error(error);
       throw new CantClearStorageError(`Can't clear storage`);
     }
   }

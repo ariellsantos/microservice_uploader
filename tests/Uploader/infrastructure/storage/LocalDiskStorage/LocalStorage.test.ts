@@ -3,8 +3,11 @@ import { container } from '../../../../../src/Application/a-dependency-injection
 import { LocalStorage } from '../../../../../src/Uploader/infrastructure/storage/LocalDiskStorage/LocalStorage';
 import { FileNotFoundError } from '../../../../../src/Uploader/infrastructure/storage/FileNotFoundError';
 import url from 'url';
+import Logger from '../../../../../src/Uploader/domain/Logger';
 const localStorage: LocalStorage = container.resolve('localStorageService');
 let localStorageUtil: LocalStorage;
+
+const logger: Logger = container.resolve('logger');
 
 /**
  * @group integration
@@ -18,9 +21,8 @@ describe('LocalDiskStorage', () => {
       await localStorageUtil.clearStorage();
     } catch (error) {
       if (error instanceof Error) {
-        console.log(error.message);
+        logger.info('Nothing to delete');
       }
-      console.log('Nothing to delete');
     }
   });
   describe('#FindFile', () => {
@@ -63,7 +65,7 @@ describe('LocalDiskStorage', () => {
       try {
         await localStorageUtil.clearStorage();
       } catch (error) {
-        console.log('Nothing to delete');
+        logger.info('Nothing to delete');
       }
     });
     it('Should create a URI by filename', async () => {

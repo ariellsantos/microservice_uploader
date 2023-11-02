@@ -1,6 +1,7 @@
 import { Bucket, Storage } from '@google-cloud/storage';
 import { GCPStorageConfig } from '../../../application/GCPStorageConfig';
 import { InvalidBucketError } from './InvalidBucketError';
+import { Logger } from 'winston';
 
 type Nullable<T> = null | T;
 
@@ -8,7 +9,10 @@ export class GCPStorageConnection {
   private bucket: Bucket;
   private storage: Storage;
 
-  constructor(private readonly gcpConfig: GCPStorageConfig) {
+  constructor(
+    private readonly gcpConfig: GCPStorageConfig,
+    private readonly logger: Logger
+  ) {
     this.initialize();
   }
   async getBucket(name: Nullable<string> = null): Promise<Bucket> {
@@ -31,7 +35,7 @@ export class GCPStorageConnection {
     try {
       await bucket.exists();
     } catch (error) {
-      if (error instanceof Error) console.log(error.message);
+      if (error instanceof Error) this.logger.error(error);
       throw new InvalidBucketError(`This bucket doesn't exist`);
     }
   }

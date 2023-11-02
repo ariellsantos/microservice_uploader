@@ -5,6 +5,9 @@ import { FileUploader } from '../../Uploader/application/Uploads/FileUploader';
 import { container } from '../a-dependency-injection/container';
 import { GenerateFileURI } from '../../Uploader/application/Uploads/GenerateFileURI';
 import { FileNotFoundError } from '../../Uploader/infrastructure/storage/FileNotFoundError';
+import Logger from '../../Uploader/domain/Logger';
+
+const logger: Logger = container.resolve('logger');
 
 const router = Router();
 
@@ -19,9 +22,9 @@ export function validateReqSchema(req: Request, res: Response, next: NextFunctio
 
 router.get('/', async (req: Request, res: Response) => {
   try {
-    console.log('request received');
+    logger.debug('request received');
   } catch (error) {
-    if (error instanceof Error) console.log(error.message, error.name, error.stack);
+    if (error instanceof Error) logger.error(error);
   }
   res.end();
 });
@@ -35,7 +38,7 @@ router.post('/uploads', reqSchemaUploadFile, validateReqSchema, async (req: Requ
     await uploaderService.run({ data, fileName });
   } catch (error) {
     if (error instanceof Error) {
-      console.error(error);
+      logger.error(error);
       res.status(500).send({ error: error.message });
       res.end();
     }
@@ -50,16 +53,15 @@ router.get('/uploads/uri/:fileName', reqFileUri, validateReqSchema, async (req: 
     const { fileName } = req.params;
     const uploaderService: GenerateFileURI = container.resolve('generateUriFileService');
     const uri = await uploaderService.run({ fileName });
-    res
-      .status(200)
-      .setHeader('Content-Type', 'application/json')
-      .send({ data: { uri } });
+    res.status(200).setHeader('Content-Type', 'application/json').send({ data: { uri } });
   } catch (error) {
     if (error instanceof FileNotFoundError) {
+      logger.error(error);
       res.status(404).send({ error: error.message });
       res.end();
     }
     if (error instanceof Error) {
+      logger.error(error);
       res.status(500).send({ error: error.message });
       res.end();
     }

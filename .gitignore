@@ -8,3 +8,4 @@ coverage/
 /environments/production.json
 /environments/test.json
 logs/
+.github/

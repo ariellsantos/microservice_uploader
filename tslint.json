@@ -10,7 +10,7 @@
         "no-var-keyword": true,
         "no-duplicate-variable": true,
         "no-string-throw": true,
-        "no-console": false,
+        "no-console": true,
         "no-shadowed-variable": false,
         "no-trailing-whitespace": true,
         "prefer-const": true,
