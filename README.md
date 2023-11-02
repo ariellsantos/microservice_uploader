@@ -73,5 +73,4 @@ Production
 npm start
 ```
 
-
-
+To get an idea of how this API works, you can go to the files `./tests/features/uploader/GenerateUri.feature` and `./tests/features/uploader/UploadFIle.feature`
