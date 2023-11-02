@@ -1,5 +1,5 @@
 Feature: Upload File
-  As a client i want to upload a file to a storage
+  As a client I want to upload a file to a storage
   Scenario: Upload a file to storage successfully
     Given I send a POST request to "/uploads" with body:
     """
