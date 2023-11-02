@@ -61,7 +61,7 @@ npm run build
 
 ## Run project
 
-In order to run this project an GCP account with permissions and a config file will needs to be setup
+In order to run this project an GCP account with permissions and a config file will be needed
 
 Run on dev environment (runs with NODE_ENV=test by default)
 ```shell
