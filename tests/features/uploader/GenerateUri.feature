@@ -1,5 +1,5 @@
 Feature: Generate URI for file uploaded
-  As a client a want to get a uri to download the file
+  As a client i want to get a uri to download the file
 
   Scenario: Download a file uploaded
     Given I send a POST request to "/uploads" with body:
