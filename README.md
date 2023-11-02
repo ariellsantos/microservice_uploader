@@ -28,7 +28,7 @@ Also you can see `./src/Application/configs/config.ts` for more reference
 - Generate a service account with permissions for management (write, read and delete on storage buckets) 
 - Download keyFile.json
 - Put the keyfile.json on a desired dir
-- Update `./environments/{env}.json` file and add the path to the keyfile.json
+- Update `./environments/{env}.json` file and add the path where the keyfile.json is located
 - Add the projectID to the `./environments/{env}.json`
 
 
